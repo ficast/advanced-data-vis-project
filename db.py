@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 from urllib.parse import quote_plus
+import time
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,7 +26,11 @@ SessionLocal = sessionmaker(bind=engine)
 
 def get_session():
     """Get a new SQLAlchemy session."""
-    return SessionLocal()
+    start_time = time.time()
+    session = SessionLocal()
+    end_time = time.time()
+    print(f"Session creation time: {end_time - start_time} seconds")
+    return session
 
 def fetchall(query: str, params: dict = None) -> list[dict]:
     """Run a SELECT query and return all results as a list of dicts."""

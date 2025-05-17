@@ -1,17 +1,22 @@
+from utils.constants import MAX_NOTA, MIN_NOTA, NUMBER_OF_STEPS
 import plotly.graph_objects as go
 import numpy as np
 import plotly.express as px
 from dash import html, dcc
 
-def criar_escala_cores(min_nota, max_nota):
-    num_cores = 8
-    cores = px.colors.sample_colorscale("Blues", [n/(num_cores - 1) for n in range(num_cores)])
+def criar_escala_cores(min_nota, max_nota, cor_escala="Blues"):
+    num_cores = NUMBER_OF_STEPS
+    cores = px.colors.sample_colorscale(cor_escala, [n/(num_cores - 1) for n in range(num_cores)])
 
     valores = np.linspace(min_nota, max_nota, num_cores)
     valores_texto = [f"{v:.0f}" for v in valores]
 
-    # Definir cor do texto: branco para todas, exceto a mais clara (primeira), que é preta
-    text_colors = ['#000000'] * (num_cores)
+    # Calculate white para os 2 primeiros e preto para os 6 últimos
+    text_colors = [
+        '#EEEEEE' if i > 3 else '#000000' for i in range(num_cores)
+    ]
+    
+    print('Valores:', valores)
 
     fig = go.Figure(
         data=[
@@ -22,7 +27,7 @@ def criar_escala_cores(min_nota, max_nota):
                 orientation='v',
                 text=valores_texto,
                 textposition="inside",
-                textfont=dict(color=text_colors, size=10),
+                textfont=dict(color=text_colors, size=12),
                 hoverinfo='skip'
             )
         ]
@@ -36,22 +41,22 @@ def criar_escala_cores(min_nota, max_nota):
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         width=80,
-        height=260
+        height=300
     )
 
     return fig
 
-def Scale(min_nota, max_nota):
+def Scale():
     return html.Div(
         id='scale-card',
         children=[
             html.H4("Escala de Notas",
                    style={'text-align': 'center',
-                         'margin-bottom': '8px',
+                         'margin-bottom': '0px',
                          'font-size': '12px'}),
             dcc.Graph(
                 id='scale-graph',
-                figure=criar_escala_cores(min_nota, max_nota),
+                figure=criar_escala_cores(MIN_NOTA, MAX_NOTA),
                 config={
                     'staticPlot': True,
                     'displayModeBar': False

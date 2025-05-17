@@ -1,6 +1,6 @@
 import pandas as pd
 from db import get_session
-
+import os
 TIMELINE_QUERY = """
 SELECT nu_ano, estado, AVG(media_global) AS media_global
 FROM enem.mv_media_global_estado
@@ -17,9 +17,18 @@ ORDER BY nu_ano, estado;
 
 def load_timeline_data():
     """Carrega os dados da timeline do banco de dados."""
+    
+    if os.path.exists('cache/timeline_cache.csv'):
+        df = pd.read_csv('cache/timeline_cache.csv')
+        return df
+    
     session = get_session()
     df = pd.read_sql(TIMELINE_QUERY, session.connection())
     session.close()
+    
+    if not os.path.exists('cache/timeline_cache.csv'):
+        df.to_csv('cache/timeline_cache.csv', index=False)
+    
     return df
 
 def get_timeline_data(df, estado_selecionado):
@@ -39,18 +48,3 @@ def get_timeline_data(df, estado_selecionado):
     else:
         estado = None
     return brasil, estado
-
-if __name__ == "__main__":
-    # Teste
-    df = load_timeline_data()
-    print("Shape:", df.shape)
-    print("\nPrimeiras linhas:")
-    print(df.head())
-
-    # Teste com um estado
-    brasil, estado = get_timeline_data(df, "São Paulo")
-    print("\nDados do Brasil:")
-    print(brasil.head())
-    if estado is not None:
-        print("\nDados de São Paulo:")
-        print(estado.head())

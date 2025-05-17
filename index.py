@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 import callbacks.map_callbacks
 import callbacks.timeline_callbacks
 import callbacks.sidebar_callbacks
-
+import callbacks.scale_callbacks
 # Layout principal
 app.layout = dbc.Container(
     className="app-container",
@@ -30,9 +30,10 @@ app.layout = dbc.Container(
                     width=4,
                     style={
                         "height": "100vh",
+                        'overflowY': 'scroll',
                         "padding": 0,
                         "margin": 0,
-                        "border-left": "1px solid black",
+                        "box-shadow": "0px 2px 2px rgba(0,0,0,0.12)"
                     },
                 ),
             ],

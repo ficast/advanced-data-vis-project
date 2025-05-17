@@ -20,7 +20,16 @@ def atualizar_timeline(nome_estado):
         y=brasil['media_global'],
         mode='lines+markers',
         name='Brasil',
-        line=dict(color='blue', width=3)
+        line=dict(color='blue', width=3),
+        hovertemplate='<b>Brasil</b><br>' +
+                     'Ano: %{x}<br>' +
+                     'Média: %{y:.2f}<br>' +
+                     '<extra></extra>',
+        hoverlabel=dict(
+            bgcolor="white",
+            font_size=12,
+            font_family="Open Sans",
+        )
     ))
 
     # Linha do estado selecionado (se não for Brasil)
@@ -31,7 +40,16 @@ def atualizar_timeline(nome_estado):
             y=estado['media_global'],
             mode='lines+markers',
             name=nome_estado,
-            line=dict(color='orange', width=3)
+            line=dict(color='red', width=3),
+            hovertemplate='<b>%{fullData.name}</b><br>' +
+                         'Ano: %{x}<br>' +
+                         'Média: %{y:.2f}<br>' +
+                         '<extra></extra>',
+            hoverlabel=dict(
+                bgcolor="white",
+                font_size=12,
+                font_family="Open Sans",
+            )
         ))
 
     fig.update_layout(
@@ -43,7 +61,8 @@ def atualizar_timeline(nome_estado):
         yaxis_tickfont=dict(size=12),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
-        template="plotly_white"
+        template="plotly_white",
+        hovermode='closest'
     )
 
     return fig
@@ -57,10 +76,7 @@ def atualizar_timeline(nome_estado):
 def selecionar_ano_timeline(clickData, n_clicks, ano_anterior):
     ctx = callback_context
     trigger = ctx.triggered[0]['prop_id'].split('.')[0]
-    print("clickData:", clickData)
-    print("n_clicks:", n_clicks)
-    print("ano_anterior:", ano_anterior)
-    print("trigger:", trigger)
+
     if not ctx.triggered:
         return ano_anterior or ""
     if trigger == 'limpar-ano':
