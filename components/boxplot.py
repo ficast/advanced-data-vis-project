@@ -1,10 +1,10 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
+from utils.constants import COLOR_BLUE_BRASIL, COLOR_RED_ESTADO, COLOR_GREEN_MUNICIPIO
 def create_box_plots(df, nome_estado, nome_municipio):
     disciplinas = ['Linguagens', 'Humanas', 'Natureza', 'Matemática', 'Redação']
     niveis = ['Brasil', 'Estado', 'Municipio']
-    cores = {'Brasil': 'blue', 'Estado': 'red', 'Municipio': 'green'}
+    cores = {'Brasil': COLOR_BLUE_BRASIL, 'Estado': COLOR_RED_ESTADO, 'Municipio': COLOR_GREEN_MUNICIPIO}
     cor_fake = 'rgba(0,0,0,0)'
 
     legenda_niveis = {

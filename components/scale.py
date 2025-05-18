@@ -15,8 +15,6 @@ def criar_escala_cores(min_nota, max_nota, cor_escala="Blues"):
     text_colors = [
         '#EEEEEE' if i > 3 else '#000000' for i in range(num_cores)
     ]
-    
-    print('Valores:', valores)
 
     fig = go.Figure(
         data=[

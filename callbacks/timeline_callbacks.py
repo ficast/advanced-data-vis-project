@@ -2,6 +2,7 @@ from dash import Input, Output, State, callback_context
 import plotly.graph_objects as go
 from app import app
 from queries.timeline_query import load_timeline_data
+from utils.constants import COLOR_BLUE_BRASIL, COLOR_RED_ESTADO
 
 # Carrega todos os dados uma vez
 df_timeline = load_timeline_data()
@@ -20,7 +21,7 @@ def atualizar_timeline(nome_estado):
         y=brasil['media_global'],
         mode='lines+markers',
         name='Brasil',
-        line=dict(color='blue', width=3),
+        line=dict(color=COLOR_BLUE_BRASIL, width=3),
         hovertemplate='<b>Brasil</b><br>' +
                      'Ano: %{x}<br>' +
                      'Média: %{y:.2f}<br>' +
@@ -40,7 +41,7 @@ def atualizar_timeline(nome_estado):
             y=estado['media_global'],
             mode='lines+markers',
             name=nome_estado,
-            line=dict(color='red', width=3),
+            line=dict(color=COLOR_RED_ESTADO, width=3),
             hovertemplate='<b>%{fullData.name}</b><br>' +
                          'Ano: %{x}<br>' +
                          'Média: %{y:.2f}<br>' +
@@ -62,7 +63,9 @@ def atualizar_timeline(nome_estado):
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         template="plotly_white",
-        hovermode='closest'
+        hovermode='closest',
+        clickmode='event',
+        dragmode=False
     )
 
     return fig

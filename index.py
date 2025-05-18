@@ -1,14 +1,16 @@
-from app import app  # importa o app criado em app.py
-from components.timeline import timeline
+import os
+from app import app
+import dash_bootstrap_components as dbc
+
 from components.map import map
 from components.sidebar import sidebar
-import dash_bootstrap_components as dbc
 
 # Importação de callbacks
 import callbacks.map_callbacks
 import callbacks.timeline_callbacks
 import callbacks.sidebar_callbacks
 import callbacks.scale_callbacks
+
 # Layout principal
 app.layout = dbc.Container(
     className="app-container",
@@ -18,23 +20,13 @@ app.layout = dbc.Container(
             [
                 dbc.Col(
                     map,
+                    className="map-container",
                     width=8,
-                    style={
-                        "height": "100vh",
-                        "padding": 0,
-                        "margin": 0,
-                    },
                 ),
                 dbc.Col(
                     sidebar,
+                    className="sidebar-container",
                     width=4,
-                    style={
-                        "height": "100vh",
-                        'overflowY': 'scroll',
-                        "padding": 0,
-                        "margin": 0,
-                        "box-shadow": "0px 2px 2px rgba(0,0,0,0.12)"
-                    },
                 ),
             ],
         ),
@@ -43,4 +35,8 @@ app.layout = dbc.Container(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, host="0.0.0.0", port=8050)
+    environment = os.getenv("ENVIRONMENT")
+    if environment == "development":
+        app.run_server(debug=True, host="0.0.0.0", port=8050)
+    else:
+        app.run_server(debug=False, host="0.0.0.0", port=8050)

@@ -3,7 +3,7 @@ from dash import dcc, html
 timeline = html.Div(
         children=[
             dcc.Graph(
-                id='timeline-graph',
+            id='timeline-graph',
             config={
                 "displayModeBar": False,
                 "scrollZoom": False,

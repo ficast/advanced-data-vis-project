@@ -1,8 +1,10 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
+styleHr = {"marginBottom": "12px", "marginTop": "12px"}
+
 sidebar = dbc.Container(
-    className="sidebar-container",
+    className="sidebar-content",
     children=[
         html.H1(
             "Dados Enem 2014-2023",
@@ -29,7 +31,23 @@ sidebar = dbc.Container(
             ],
             style={"marginBottom": "10px"},
         ),
-        html.Hr(),
+        html.Hr(style=styleHr),
+        html.H3("Número de Participantes por Ano", style={"color": "#000000"}),
+        html.Div(
+            [
+                dcc.Graph(
+                    id="participantes-graph",
+                    config={
+                        "displayModeBar": False,
+                        "scrollZoom": False,
+                        "doubleClick": "reset",
+                        "editable": False,
+                    },
+                    style={"height": "400px"},
+                )
+            ]
+        ),
+        html.Hr(style=styleHr),
         html.H3("Notas Médias por Disciplina", style={"color": "#000000"}),
         html.Div(
             [
@@ -47,7 +65,7 @@ sidebar = dbc.Container(
                 "alignItems": "center",
             },
         ),
-        html.Hr(),
+        html.Hr(style=styleHr),
         html.H3("Distribuição das notas por Disciplina", style={"color": "#000000"}),
         html.Div(
             [

@@ -1,6 +1,7 @@
 import pandas as pd
 from db import get_session
 import os
+
 TIMELINE_QUERY = """
 SELECT nu_ano, estado, AVG(media_global) AS media_global
 FROM enem.mv_media_global_estado
@@ -16,7 +17,12 @@ ORDER BY nu_ano, estado;
 """
 
 def load_timeline_data():
-    """Carrega os dados da timeline do banco de dados."""
+    """
+    Carrega os dados da timeline do banco de dados.
+
+    Returns:
+        pandas.DataFrame: DataFrame com os dados da timeline.
+    """
     
     if os.path.exists('cache/timeline_cache.csv'):
         df = pd.read_csv('cache/timeline_cache.csv')

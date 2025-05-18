@@ -3,6 +3,18 @@ from db import get_session
 
 
 def load_areas_radar(nome_uf=None, nome_municipio=None, ano=None):
+    """
+    Carrega os dados para o radar da materialized view.
+
+    Args:
+        nome_uf (str, optional): Nome do estado para filtrar. Se None, retorna todos os estados.
+        nome_municipio (str, optional): Nome do município para filtrar. Se None, retorna todos os municípios.
+        ano (int, optional): Ano para filtrar. Se None, retorna todos os anos.
+
+    Returns:
+        pandas.DataFrame: DataFrame com os dados para o radar.
+    """
+    
     session = get_session()
     params = {}
     where_ano = ""

@@ -25,11 +25,7 @@ engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(bind=engine)
 
 def get_session():
-    """Get a new SQLAlchemy session."""
-    start_time = time.time()
     session = SessionLocal()
-    end_time = time.time()
-    print(f"Session creation time: {end_time - start_time} seconds")
     return session
 
 def fetchall(query: str, params: dict = None) -> list[dict]:
