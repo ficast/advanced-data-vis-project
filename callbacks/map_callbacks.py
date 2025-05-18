@@ -5,7 +5,7 @@ from queries.map_query import load_map_data
 import plotly.graph_objects as go
 from app import app
 from queries.municipios_query import load_municipios_data
-from utils.map_utils import calculate_zoom, get_estado_coordinates
+from utils.map_utils import calcular_tamanho_marcador, calculate_zoom, get_estado_coordinates
 import os
 from utils.constants import (
     COLOR_RED_ESTADO,
@@ -243,7 +243,7 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, fig_state):
                 lon=df_municipios['lng'],
                 mode='markers',
                 marker=go.scattermapbox.Marker(
-                    size=df_municipios['nota_total'] / 50,
+                    size=calcular_tamanho_marcador(df_municipios['nota_total'], escala=10),
                     color=df_municipios['nota_total'],
                     colorscale='Reds',
                     opacity=1,
