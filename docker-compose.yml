@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8050:8050"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
