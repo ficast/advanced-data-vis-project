@@ -17,4 +17,11 @@ def load_participantes_data(estado=None, municipio=None):
         
     session = get_session()
 
-    return pd.read_sql(query, session.connection())
+    try:
+        df = pd.read_sql(query, session.connection())
+        return df
+    except Exception as e:
+        print(f"Erro ao carregar dados: {str(e)}")
+        raise e
+    finally:
+        session.close()

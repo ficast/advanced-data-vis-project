@@ -21,8 +21,6 @@ def load_map_data(ano=None, estado=None):
         if estado:
             gdf = gdf[gdf['estado'] == estado]
             
-    load_municipios_data()
-
     # else:
     #     query = "SELECT * FROM enem.mv_media_global_estado"
     #     if ano:

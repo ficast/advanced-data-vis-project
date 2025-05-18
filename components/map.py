@@ -1,11 +1,11 @@
 from dash import dcc, html
 from components.timeline import timeline
 from components.scale import Scale
+from components.snackbar import snackbar
 from queries.municipios_query import load_municipios_data
 from queries.map_query import load_map_data
 import plotly.graph_objects as go
 import pandas as pd
-import os
 from utils.constants import MAPBOX_ACCESS_TOKEN, MAPBOX_CENTER, MAPBOX_STYLE, MAPBOX_ZOOM, MIN_NOTA, MAX_NOTA
 
 def get_map_figure(ano=None, estado=None):
@@ -89,5 +89,6 @@ map = html.Div(
         ),
         Scale(),
         timeline,
+        snackbar,
     ],
 )

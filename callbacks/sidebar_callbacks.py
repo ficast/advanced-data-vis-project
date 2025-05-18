@@ -2,6 +2,7 @@ from dash import Output, Input, State, callback_context
 from app import app
 from components.boxplot import create_box_plots
 from components.participantes import create_participantes_figure
+from components.renda_familiar import criar_grafico_renda_familiar
 from queries.participantes_query import load_participantes_data
 from queries.boxplot_query import load_boxplot_data
 from queries.radar_query import load_areas_radar
@@ -60,6 +61,18 @@ def update_participantes_graph(estado, municipio):
     df = load_participantes_data(estado_param, municipio_param)
     return create_participantes_figure(df, estado_param, municipio_param)
 
+@app.callback(
+    Output('grafico-renda-familiar', 'figure'),
+    [
+        Input('nome-estado', 'children'),
+        Input('nome-municipio', 'children'),
+        Input('ano-selecionado', 'children')
+    ]
+)
+def atualizar_grafico_renda(nome_estado, nome_municipio, ano_selecionado):
+    ano = int(ano_selecionado) if ano_selecionado else None
+    return criar_grafico_renda_familiar(ano, nome_estado, nome_municipio)
+
 
 def get_toggle_info(restyle_data, source_fig):
     """Extrai informações sobre qual trace foi alterado"""
@@ -87,22 +100,25 @@ def update_traces_visibility(fig, name, visibility):
 @app.callback(
     [Output('radar-areas', 'figure', allow_duplicate=True),
      Output('box-plots', 'figure', allow_duplicate=True),
-     Output('participantes-graph', 'figure', allow_duplicate=True)],
+     Output('participantes-graph', 'figure', allow_duplicate=True),
+     Output('grafico-renda-familiar', 'figure', allow_duplicate=True)],
     [Input('radar-areas', 'restyleData'),
      Input('box-plots', 'restyleData'),
-     Input('participantes-graph', 'restyleData')],
+     Input('participantes-graph', 'restyleData'),
+     Input('grafico-renda-familiar', 'restyleData')],
     [State('radar-areas', 'figure'),
      State('box-plots', 'figure'),
-     State('participantes-graph', 'figure')],
+     State('participantes-graph', 'figure'),
+     State('grafico-renda-familiar', 'figure')],
     prevent_initial_call=True
 )
-def sync_all_graphs(radar_restyle, boxplot_restyle, participantes_restyle,
-                   radar_fig, boxplot_fig, participantes_fig):
+def sync_all_graphs(radar_restyle, boxplot_restyle, participantes_restyle, renda_restyle,
+                   radar_fig, boxplot_fig, participantes_fig, renda_fig):
     """Sincroniza a visibilidade das legendas entre todos os gráficos"""
 
     ctx = callback_context
     if not ctx.triggered:
-        return radar_fig, boxplot_fig, participantes_fig
+        return radar_fig, boxplot_fig, participantes_fig, renda_fig
 
     # Identifica qual gráfico disparou o callback
     trigger = ctx.triggered[0]['prop_id'].split('.')[0]
@@ -111,7 +127,8 @@ def sync_all_graphs(radar_restyle, boxplot_restyle, participantes_restyle,
     restyle_map = {
         'radar-areas': (radar_restyle, radar_fig),
         'box-plots': (boxplot_restyle, boxplot_fig),
-        'participantes-graph': (participantes_restyle, participantes_fig)
+        'participantes-graph': (participantes_restyle, participantes_fig),
+        'grafico-renda-familiar': (renda_restyle, renda_fig)
     }
 
     # Obtém as informações do trace que foi alterado
@@ -119,11 +136,12 @@ def sync_all_graphs(radar_restyle, boxplot_restyle, participantes_restyle,
     toggled_name, new_visibility = get_toggle_info(restyle_data, source_fig)
 
     if toggled_name is None:
-        return radar_fig, boxplot_fig, participantes_fig
+        return radar_fig, boxplot_fig, participantes_fig, renda_fig
 
     # Atualiza todos os gráficos
     radar_fig = update_traces_visibility(radar_fig, toggled_name, new_visibility)
     boxplot_fig = update_traces_visibility(boxplot_fig, toggled_name, new_visibility)
     participantes_fig = update_traces_visibility(participantes_fig, toggled_name, new_visibility)
+    renda_fig = update_traces_visibility(renda_fig, toggled_name, new_visibility)
 
-    return radar_fig, boxplot_fig, participantes_fig
+    return radar_fig, boxplot_fig, participantes_fig, renda_fig

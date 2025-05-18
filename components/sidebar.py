@@ -84,6 +84,20 @@ sidebar = dbc.Container(
                 "backgroundColor": "white",
             },
         ),
+        html.Hr(style=styleHr),
+        html.H3("Notas Médias por Renda Familiar", style={"color": "#000000"}),
+        html.Div(
+            [
+                dcc.Graph(
+                    id="grafico-renda-familiar",
+                    config={
+                        "displayModeBar": False,
+                        "scrollZoom": False,
+                    },
+                ),
+            ],
+            style={"height": "400px"},
+        ),
     ],
     fluid=True,
 )

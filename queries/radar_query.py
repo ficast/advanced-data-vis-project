@@ -72,6 +72,11 @@ def load_areas_radar(nome_uf=None, nome_municipio=None, ano=None):
     params['nome_uf'] = nome_uf
     params['nome_municipio'] = nome_municipio
 
-    df = pd.read_sql(query, session.connection(), params=params)
-    session.close()
-    return df
+    try:
+        df = pd.read_sql(query, session.connection(), params=params)
+        return df
+    except Exception as e:
+        print(f"Erro ao carregar dados: {str(e)}")
+        raise e
+    finally:
+        session.close()

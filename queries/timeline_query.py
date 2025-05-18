@@ -29,13 +29,19 @@ def load_timeline_data():
         return df
     
     session = get_session()
-    df = pd.read_sql(TIMELINE_QUERY, session.connection())
-    session.close()
+    try:
+        df = pd.read_sql(TIMELINE_QUERY, session.connection())
+        return df
+    except Exception as e:
+        print(f"Erro ao carregar dados: {str(e)}")
+        raise e
+    finally:
+        session.close()
     
-    if not os.path.exists('cache/timeline_cache.csv'):
-        df.to_csv('cache/timeline_cache.csv', index=False)
+    # if not os.path.exists('cache/timeline_cache.csv'):
+    #     df.to_csv('cache/timeline_cache.csv', index=False)
     
-    return df
+    # return df
 
 def get_timeline_data(df, estado_selecionado):
     """

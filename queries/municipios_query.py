@@ -3,30 +3,46 @@ import os
 
 from db import get_session
 
-def load_municipios_data(ano=None, estado=None):
+def load_municipios_data(ano=None, estado=None, municipio=None):
     """
     Carrega os municípios disponíveis com suas coordenadas e notas.
 
     Args:
-        ano (int, optional): Ano específico para filtrar. Se None, retorna todos os anos.
+        ano (int, optional): Ano específico para filtrar. Se None, retorna média de todos os anos.
+        estado (str, optional): Estado para filtrar.
 
     Returns:
         pandas.DataFrame: DataFrame com os municípios, suas coordenadas e notas.
     """
-    
-    if not estado and not ano:
+    if not estado:
         return None
-    
+
     if os.path.exists('cache/municipios_cache.csv'):
         df = pd.read_csv('cache/municipios_cache.csv')
-        if ano and estado:
+
+        # Filtra pelo estado
+        df = df[df['nome_uf'] == estado]
+        
+        if municipio:
+            df = df[df['nome_municipio'] == municipio]
+            return df.reset_index(drop=True)
+
+        if ano:
+            # Filtra pelo ano, retorna normalmente
             df = df[df['nu_ano'] == ano]
-            df = df[df['nome_uf'] == estado]
-        elif ano:
-            df = df[df['nu_ano'] == ano]
-        elif estado:
-            df = df[df['nome_uf'] == estado]
-        return df
+            return df.reset_index(drop=True)
+        else:
+            # Agrega por município: média das notas, pega o primeiro lat/lng
+            df_agg = (
+                df.groupby(['codigo_municipio', 'nome_municipio'], as_index=False)
+                .agg({
+                    'nota_total': 'mean',
+                    'lat': 'first',
+                    'lng': 'first'
+                })
+            )
+            return df_agg.reset_index(drop=True)
+    return None
     
     
     # if not estado and not ano:
