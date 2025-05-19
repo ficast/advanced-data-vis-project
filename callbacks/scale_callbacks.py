@@ -12,3 +12,4 @@ def atualizar_escala_cores(nome_estado):
         return criar_escala_cores(MIN_NOTA, MAX_NOTA, cor_escala="Reds")
     else:
         return criar_escala_cores(MIN_NOTA, MAX_NOTA, cor_escala="Blues")
+    

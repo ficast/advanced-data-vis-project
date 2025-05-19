@@ -14,11 +14,9 @@ def criar_grafico_renda_familiar(ano=None, estado=None, municipio=None):
         return px.bar(title="Sem dados do Brasil disponíveis")
     
     if estado != 'Brasil':
-        print('Carregando dados do estado', estado)
         df_estado = load_renda_familiar_data(ano, estado)
     
     if municipio != '':
-        print('Carregando dados do municipio', municipio)
         df_municipio = load_renda_familiar_data(ano, estado, municipio)
     
     # Ordena as faixas
@@ -65,12 +63,6 @@ def criar_grafico_renda_familiar(ano=None, estado=None, municipio=None):
         margin=dict(l=20, r=20, t=40, b=40),
         showlegend=False
     )
-    
-    # quais os valores de quantidade_alunos do df_brasil
-    print('df_brasil[quantidade_alunos]', df_brasil[['faixa_renda_label','nota_media','quantidade_alunos']])
-    # checar o type de nota_media e quantidade_alunos
-    print('type de nota_media', type(df_brasil['nota_media'].iloc[0]))
-    print('type de quantidade_alunos', type(df_brasil['quantidade_alunos'].iloc[0]))
     
     # Hover detalhado
     for i, trace in enumerate(fig.data):

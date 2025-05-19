@@ -39,124 +39,6 @@ def atualizar_nome_municipio(selectedData):
     return dash.no_update  # Não atualiza se não for município
 
 
-# @app.callback(
-#     Output("map-graph", "figure"),
-#     [
-#         Input("map-graph", "relayoutData"),
-#         Input("ano-selecionado", "children"),
-#         Input("nome-estado", "children"),
-#     ],
-#     State("map-graph", "figure"),
-# )
-# def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, fig):
-#     import time
-
-#     start_time = time.time()
-#     # 1. Obter o zoom e o centro atuais do mapa
-#     zoom = 3.5
-#     center_lat = -14
-#     center_lon = -52
-
-#     if relayoutData:
-#         zoom = relayoutData.get("mapbox.zoom", zoom)
-#         center_lat = relayoutData.get("mapbox.center.lat", center_lat)
-#         center_lon = relayoutData.get("mapbox.center.lon", center_lon)
-
-#     # 2. Carrega dados necessários
-#     ano = int(ano_selecionado) if ano_selecionado else None
-#     gdf = load_map_data(ano)
-#     estado_selecionado = nome_estado if nome_estado != "Brasil" else None
-
-#     # 3. Obter as coordenadas do estado selecionado
-#     if estado_selecionado:
-#         center_lat, center_lon = get_estado_coordinates(gdf, estado_selecionado)
-#         zoom = calculate_zoom(gdf, estado_selecionado, 800, 600)
-
-#     # 4. Cria figura base com os estados
-#     fig = go.Figure(
-#         go.Choroplethmapbox(
-#             geojson=gdf.__geo_interface__,
-#             locations=gdf["codigo_uf"],
-#             z=gdf["media_global"],
-#             featureidkey="properties.codigo_uf",
-#             text=gdf["estado"],
-#             hovertemplate="<b>%{text}</b><br>Nota média: %{z:.2f}<extra></extra>",
-#             customdata=pd.Series(["Estado"] * len(gdf)),
-#             colorscale="Blues",
-#             zmin=MIN_NOTA,
-#             zmax=MAX_NOTA,
-#             marker_opacity=1,
-#             selected=dict(marker=dict(opacity=0.3)),
-#             unselected=dict(marker=dict(opacity=1)),
-#             marker_line_width=0.5,
-#             showscale=False,
-#             name="Estados",
-#         )
-#     )
-
-#     # 5. Adiciona municípios se um estado estiver selecionado
-#     if nome_estado != "Brasil":
-#         df_municipios = load_municipios_data(ano, nome_estado)
-#         if not df_municipios.empty:
-#             if nome_estado != "Brasil":
-#                 estado_gdf = gdf[gdf["estado"] == nome_estado].copy()
-#                 fig.add_trace(
-#                     go.Choroplethmapbox(
-#                         geojson=estado_gdf.__geo_interface__,
-#                         locations=estado_gdf["codigo_uf"],
-#                         z=estado_gdf["media_global"],
-#                         featureidkey="properties.codigo_uf",
-#                         text=estado_gdf["estado"],
-#                         hovertemplate="<b>%{text}</b><br>Nota média: %{z:.2f}<extra></extra>",
-#                         customdata=pd.Series(["Estado"] * len(estado_gdf)),
-#                         colorscale="Blues",
-#                         opacity=0.5,
-#                         zmin=MIN_NOTA,
-#                         zmax=MAX_NOTA,
-#                         marker_line_color=COLOR_RED_ESTADO,
-#                         marker_line_width=4,
-#                         showscale=False,
-#                         name="Estado Selecionado",
-#                     )
-#                 )
-#             fig.add_trace(
-#                 go.Scattermapbox(
-#                     lat=df_municipios["lat"],
-#                     lon=df_municipios["lng"],
-#                     mode="markers",
-#                     marker=go.scattermapbox.Marker(
-#                         size=10,
-#                         color=df_municipios["nota_total"],
-#                         colorscale="Reds",
-#                         opacity=1,
-#                         cmin=MIN_NOTA,
-#                         cmax=MAX_NOTA,
-#                     ),
-#                     text=df_municipios["nome_municipio"],
-#                     hovertemplate="<b>%{text}</b><br>Nota média: %{customdata:.2f}<extra></extra>",
-#                     customdata=df_municipios["nota_total"],
-#                     name="Municípios",
-#                 )
-#             )
-
-#     # 6. Mantém o layout consistente
-#     fig.update_layout(
-#         mapbox_style=MAPBOX_STYLE,
-#         mapbox_accesstoken=MAPBOX_ACCESS_TOKEN,
-#         mapbox_zoom=zoom,  # Mantém o zoom atual
-#         mapbox_center={"lat": center_lat, "lon": center_lon},  # Mantém o centro atual
-#         margin={"r": 0, "t": 0, "l": 0, "b": 0},
-#         clickmode="event+select",
-#         paper_bgcolor="#D6D6D6",
-#         plot_bgcolor="#D6D6D6",
-#     )
-#     end_time = time.time()
-#     print(
-#         f"Tempo de execução da função atualizar_mapa: {end_time - start_time} segundos"
-#     )
-#     return fig
-
-
 # # alternative version of alterar mapa
 @app.callback(
     Output('map-graph', 'figure'),
@@ -253,10 +135,10 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
                 lon=df_municipios['lng'],
                 mode='markers',
                 marker=go.scattermapbox.Marker(
-                    size=calcular_tamanho_marcador(df_municipios['nota_total'], escala=15),
+                    size=calcular_tamanho_marcador(df_municipios['nota_total'], escala=10),
                     color=df_municipios['nota_total'],
                     colorscale='Reds',
-                    opacity=1,
+                    opacity=0.8,
                     cmin=MIN_NOTA,
                     cmax=MAX_NOTA,
                 ),

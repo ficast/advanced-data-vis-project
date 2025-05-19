@@ -1,5 +1,6 @@
 from dash import html
 from utils.constants import COLOR_BLUE_BRASIL
+
 snackbar = html.Div(
     "Clique em um estado no mapa ou um ano na timeline para filtrar os dados.",
     id="mapa-instrucao",

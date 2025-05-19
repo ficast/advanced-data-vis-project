@@ -32,13 +32,14 @@ def calculate_zoom(gdf, nome_estado, mapbox_width, mapbox_height):
 def calcular_tamanho_marcador(notas, escala=10):
     """
     Calcula o tamanho dos marcadores usando uma transformação logarítmica e escalonamento Min-Max.
+    O tamanho mínimo é 10 e o máximo é 10.
     """
     # 1. Adiciona 1 para evitar log(0) e aplica o logaritmo
     notas_log = np.log(notas + 1)
 
-    # 2. Escalonamento Min-Max
+    # 2. Escalonamento Min-Max para o intervalo [10, 30]
     min_nota = notas_log.min()
     max_nota = notas_log.max()
-    size = ((notas_log - min_nota) / (max_nota - min_nota)) * escala
+    size = escala + ((notas_log - min_nota) / (max_nota - min_nota)) * 10
 
     return size
