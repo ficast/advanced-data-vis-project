@@ -10,18 +10,19 @@ def load_participantes_data(estado=None, municipio=None):
     WHERE 1=1
     """
     if estado and estado != "Brasil":
-        query += f" AND (nivel = 'Brasil' OR (nivel = 'Estado' AND nome = '{estado}') "
+        query += f" AND (nivel = 'Brasil' OR (nivel = 'Estado' AND LOWER(nome) = '{estado.lower()}') "
         if municipio:
-            query += f" OR (nivel = 'Municipio' AND nome = '{municipio}')"
+            query += f" OR (nivel = 'Municipio' AND LOWER(nome) = '{municipio.lower()}')"
         query += ")"
         
     session = get_session()
 
     try:
         df = pd.read_sql(query, session.connection())
+        df['nome'] = df['nome'].str.capitalize()
         return df
     except Exception as e:
         print(f"Erro ao carregar dados: {str(e)}")
-        raise e
+        return pd.DataFrame()
     finally:
         session.close()

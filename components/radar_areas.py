@@ -1,4 +1,4 @@
-from utils.constants import MAX_NOTA, MIN_NOTA, COLOR_BLUE_BRASIL, COLOR_RED_ESTADO, COLOR_GREEN_MUNICIPIO
+from utils.constants import MAX_NOTA, MIN_NOTA, COLOR_BRASIL, COLOR_ESTADO, COLOR_MUNICIPIO
 import plotly.graph_objects as go
 
 def radar_areas(df_areas, estado=None, municipio=None):
@@ -15,7 +15,7 @@ def radar_areas(df_areas, estado=None, municipio=None):
         theta=areas,
         fill='toself',
         name='Brasil',
-        line=dict(color=COLOR_BLUE_BRASIL, width=2)
+        line=dict(color=COLOR_BRASIL, width=2)
     ))
 
     # Estado
@@ -27,7 +27,7 @@ def radar_areas(df_areas, estado=None, municipio=None):
                 theta=areas,
                 fill='toself',
                 name=estado,
-                line=dict(color=COLOR_RED_ESTADO, width=2)
+                line=dict(color=COLOR_ESTADO, width=2)
             ))
 
     # Município
@@ -39,7 +39,7 @@ def radar_areas(df_areas, estado=None, municipio=None):
                 theta=areas,
                 fill='toself',
                 name=municipio,
-                line=dict(color=COLOR_GREEN_MUNICIPIO, width=2)
+                line=dict(color=COLOR_MUNICIPIO, width=2)
             ))
 
     fig.update_layout(

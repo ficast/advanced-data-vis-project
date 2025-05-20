@@ -77,6 +77,6 @@ def load_areas_radar(nome_uf=None, nome_municipio=None, ano=None):
         return df
     except Exception as e:
         print(f"Erro ao carregar dados: {str(e)}")
-        raise e
+        return pd.DataFrame()
     finally:
         session.close()

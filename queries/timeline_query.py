@@ -34,7 +34,7 @@ def load_timeline_data():
         return df
     except Exception as e:
         print(f"Erro ao carregar dados: {str(e)}")
-        raise e
+        return pd.DataFrame()
     finally:
         session.close()
     

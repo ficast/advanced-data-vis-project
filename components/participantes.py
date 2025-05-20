@@ -1,6 +1,5 @@
 import plotly.graph_objects as go
-from utils.constants import COLOR_BLUE_BRASIL, COLOR_RED_ESTADO, COLOR_GREEN_MUNICIPIO
-
+from utils.constants import COLOR_BRASIL, COLOR_ESTADO, COLOR_MUNICIPIO
 
 def create_participantes_figure(df, estado=None, municipio=None):
     """
@@ -15,49 +14,47 @@ def create_participantes_figure(df, estado=None, municipio=None):
         y=df_brasil['participantes'],
         mode='lines+markers',
         name='Brasil',
-        line=dict(color=COLOR_BLUE_BRASIL, width=3),
+        line=dict(color=COLOR_BRASIL, width=3),
         hovertemplate='<b>Brasil</b><br>' +
                      'Ano: %{x}<br>' +
                      'Participantes: %{y:,.0f}<br>' +
                      '<extra></extra>'
     ))
 
+    # Estado (case-insensitive)
     if estado and estado != "Brasil":
-        df_estado = df[(df['nivel'] == 'Estado') & (df['nome'] == estado)]
-        fig.add_trace(go.Scatter(
-            x=df_estado['nu_ano'],
-            y=df_estado['participantes'],
-            mode='lines+markers',
-            name=estado,
-            line=dict(color=COLOR_RED_ESTADO, width=3),
-            hovertemplate=f'<b>{estado}</b><br>' +
-                         'Ano: %{x}<br>' +
-                         'Participantes: %{y:,.0f}<br>' +
-                         '<extra></extra>'
-        ))
-        
-    # Dados do Município (se selecionado)
+        df_estado = df[(df['nivel'] == 'Estado') & (df['nome'].str.lower() == estado.lower())]
+        if not df_estado.empty:
+            fig.add_trace(go.Scatter(
+                x=df_estado['nu_ano'],
+                y=df_estado['participantes'],
+                mode='lines+markers',
+                name=estado,
+                line=dict(color=COLOR_ESTADO, width=3),
+                hovertemplate=f'<b>{estado}</b><br>' +
+                             'Ano: %{x}<br>' +
+                             'Participantes: %{y:,.0f}<br>' +
+                             '<extra></extra>'
+            ))
+
+    # Município (case-insensitive)
     if municipio:
-        df_mun = df[(df['nivel'] == 'Municipio') & (df['nome'] == municipio)]
-        fig.add_trace(go.Scatter(
-            x=df_mun['nu_ano'],
-            y=df_mun['participantes'],
-            mode='lines+markers',
-            name=municipio,
-            line=dict(color=COLOR_GREEN_MUNICIPIO, width=3),
-            hovertemplate=f'<b>{municipio}</b><br>' +
-                         'Ano: %{x}<br>' +
-                         'Participantes: %{y:,.0f}<br>' +
-                         '<extra></extra>'
-        ))
+        df_mun = df[(df['nivel'] == 'Municipio') & (df['nome'].str.lower() == municipio.lower())]
+        if not df_mun.empty:
+            fig.add_trace(go.Scatter(
+                x=df_mun['nu_ano'],
+                y=df_mun['participantes'],
+                mode='lines+markers',
+                name=municipio,
+                line=dict(color=COLOR_MUNICIPIO, width=3),
+                hovertemplate=f'<b>{municipio}</b><br>' +
+                             'Ano: %{x}<br>' +
+                             'Participantes: %{y:,.0f}<br>' +
+                             '<extra></extra>'
+            ))
 
     # Layout
     fig.update_layout(
-        title=dict(
-            text="Número de Participantes por Ano",
-            x=0.5,
-            y=0.95
-        ),
         xaxis=dict(
             title="Ano",
             tickmode='linear',

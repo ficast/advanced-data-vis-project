@@ -28,8 +28,8 @@ def load_boxplot_data(nome_estado=None, nome_municipio=None, ano=None):
             WHERE (%(ano)s IS NULL OR nu_ano = %(ano)s)
               AND (
                 nivel = 'Brasil'
-                OR (nivel = 'Estado' AND estado = %(nome_estado)s)
-                OR (nivel = 'Municipio' AND municipio = %(nome_municipio)s)
+                OR (nivel = 'Estado' AND LOWER(estado) = %(nome_estado)s)
+                OR (nivel = 'Municipio' AND LOWER(municipio) = %(nome_municipio)s)
               )
             ORDER BY
                 CASE nivel
@@ -42,8 +42,8 @@ def load_boxplot_data(nome_estado=None, nome_municipio=None, ano=None):
 
         # Parâmetros para a query
         params = {
-            "nome_estado": nome_estado if nome_estado != "Brasil" else None,
-            "nome_municipio": nome_municipio,
+            "nome_estado": nome_estado.lower() if nome_estado != "Brasil" else None,
+            "nome_municipio": nome_municipio.lower() if nome_municipio else None,
             "ano": ano,
         }
         # Executar a query
@@ -52,7 +52,7 @@ def load_boxplot_data(nome_estado=None, nome_municipio=None, ano=None):
 
     except Exception as e:
         print(f"Erro ao carregar dados: {str(e)}")
-        raise e
+        return pd.DataFrame()
 
     finally:
         session.close()

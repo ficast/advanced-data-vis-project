@@ -73,7 +73,7 @@ def load_renda_familiar_data(ano=None, estado=None, municipio=None):
         return df
     except Exception as e:
         print(f"Erro ao carregar dados da MV: {e}")
-        return None
+        return pd.DataFrame()
     finally:
         session.close()
         

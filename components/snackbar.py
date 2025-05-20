@@ -1,11 +1,11 @@
 from dash import html
-from utils.constants import COLOR_BLUE_BRASIL
+from utils.constants import COLOR_BRASIL
 
 snackbar = html.Div(
     "Clique em um estado no mapa ou um ano na timeline para filtrar os dados.",
     id="mapa-instrucao",
     style={
-        "background": COLOR_BLUE_BRASIL,
+        "background": COLOR_BRASIL,
         "opacity": 0.75,
         "border": "1px solid #bbb",
         "borderRadius": "8px",

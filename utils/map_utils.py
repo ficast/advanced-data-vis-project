@@ -1,5 +1,15 @@
+import time
 from utils.constants import MAPBOX_ZOOM
 import numpy as np
+
+def atualizar_layout(fig, center_lat, center_lon, zoom):
+    fig.update_layout(
+        mapbox=dict(
+            center=dict(lat=center_lat, lon=center_lon),
+            zoom=zoom
+        )
+    )
+    return fig
 
 def get_estado_coordinates(gdf, nome_estado):
     estado = gdf[gdf['estado'] == nome_estado]
@@ -14,6 +24,7 @@ def get_estado_coordinates(gdf, nome_estado):
     return None, None
 
 def calculate_zoom(gdf, nome_estado, mapbox_width, mapbox_height):
+    start_time = time.time()
     estado = gdf[gdf['estado'] == nome_estado]
     if not estado.empty:
         # Obtém os limites geográficos do estado

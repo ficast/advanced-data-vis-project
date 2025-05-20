@@ -1,52 +1,53 @@
-import plotly.graph_objects as go
+from queries.tipo_escola_query import MAPPING_TP_ESCOLA_LABEL, load_tipo_escola_data
 import numpy as np
-from queries.renda_familiar_query import load_renda_familiar_data
-from utils.constants import COLOR_BRASIL, COLOR_ESTADO, COLOR_MUNICIPIO, FAIXAS_RENDA
+import plotly.graph_objects as go
+from utils.constants import COLOR_BRASIL, COLOR_ESTADO, COLOR_MUNICIPIO
 
-def criar_grafico_renda_familiar(ano, estado, municipio):
-    categorias = list(FAIXAS_RENDA.values())
+
+def criar_grafico_tipo_escola(ano, estado, municipio):
+    categorias = list(MAPPING_TP_ESCOLA_LABEL.values())
 
     # Brasil
-    df_brasil = load_renda_familiar_data(ano, "Brasil")
+    df_brasil = load_tipo_escola_data(ano, "Brasil")
     dados_brasil = {}
-    for faixa in categorias:
-        row = df_brasil[df_brasil['faixa_renda_label'] == faixa]
+    for escola in categorias:
+        row = df_brasil[df_brasil['tipo_escola_label'] == escola]
         if not row.empty:
             row = row.iloc[0]
-            dados_brasil[faixa] = row['nota_media']
+            dados_brasil[escola] = row['nota_media']
         else:
-            dados_brasil[faixa] = np.nan
+            dados_brasil[escola] = np.nan
 
     # Estado
     dados_estado = {}
     if estado and estado != "Brasil":
-        df_estado = load_renda_familiar_data(ano, estado)
-        for faixa in categorias:
-            row = df_estado[df_estado['faixa_renda_label'] == faixa]
+        df_estado = load_tipo_escola_data(ano, estado)
+        for escola in categorias:
+            row = df_estado[df_estado['tipo_escola_label'] == escola]
             if not row.empty:
                 row = row.iloc[0]
-                dados_estado[faixa] = row['nota_media']
+                dados_estado[escola] = row['nota_media']
             else:
-                dados_estado[faixa] = np.nan
+                dados_estado[escola] = np.nan
 
     # Município
     dados_municipio = {}
     if municipio:
-        df_municipio = load_renda_familiar_data(ano, municipio)
-        for faixa in categorias:
-            row = df_municipio[df_municipio['faixa_renda_label'] == faixa]
+        df_municipio = load_tipo_escola_data(ano, municipio)
+        for escola in categorias:
+            row = df_municipio[df_municipio['tipo_escola_label'] == escola]
             if not row.empty:
                 row = row.iloc[0]
-                dados_municipio[faixa] = row['nota_media']
+                dados_municipio[escola] = row['nota_media']
             else:
-                dados_municipio[faixa] = np.nan
+                dados_municipio[escola] = np.nan
 
     fig = go.Figure()
 
     # Brasil
     fig.add_trace(go.Bar(
         x=categorias,
-        y=[dados_brasil[faixa] for faixa in categorias],
+        y=[dados_brasil[escola] for escola in categorias],
         name="Brasil",
         marker_color=COLOR_BRASIL
     ))
@@ -55,7 +56,7 @@ def criar_grafico_renda_familiar(ano, estado, municipio):
     if dados_estado:
         fig.add_trace(go.Bar(
             x=categorias,
-            y=[dados_estado[faixa] for faixa in categorias],
+            y=[dados_estado[escola] for escola in categorias],
             name=estado,
             marker_color=COLOR_ESTADO
         ))
@@ -64,14 +65,14 @@ def criar_grafico_renda_familiar(ano, estado, municipio):
     if dados_municipio:
         fig.add_trace(go.Bar(
             x=categorias,
-            y=[dados_municipio[faixa] for faixa in categorias],
+            y=[dados_municipio[escola] for escola in categorias],
             name=municipio,
             marker_color=COLOR_MUNICIPIO
         ))
 
     fig.update_layout(
         barmode='group',
-        xaxis_title="Faixa de Renda Familiar",
+        xaxis_title="Tipo de Escola",
         yaxis_title="Nota Média",
         yaxis=dict(range=[0, 1000]),
         plot_bgcolor='white',
@@ -85,5 +86,6 @@ def criar_grafico_renda_familiar(ano, estado, municipio):
             xanchor="right",
             x=1
         )
+        
     )
     return fig

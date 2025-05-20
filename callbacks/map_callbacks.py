@@ -7,7 +7,7 @@ from app import app
 from queries.municipios_query import load_municipios_data
 from utils.map_utils import calcular_tamanho_marcador, calculate_zoom, get_estado_coordinates
 from utils.constants import (
-    COLOR_RED_ESTADO,
+    COLOR_ESTADO,
     MAPBOX_ACCESS_TOKEN,
     MAPBOX_CENTER,
     MAPBOX_STYLE,
@@ -50,8 +50,6 @@ def atualizar_nome_municipio(selectedData):
     State('map-graph', 'figure')
 )
 def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, fig_state):
-    import time
-    start_time = time.time()
     # Defaults
     zoom = MAPBOX_ZOOM
     center_lat = MAPBOX_CENTER['lat']
@@ -72,16 +70,7 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
     if (trigger_id == 'nome-estado' and estado_selecionado) or (trigger_id == 'nome-municipio' and nome_municipio):
         center_lat, center_lon = get_estado_coordinates(gdf, estado_selecionado)
         zoom = calculate_zoom(gdf, estado_selecionado, 800, 600)
-        
-    # Supondo que você tenha o nome do município selecionado
-    # if trigger_id == 'nome-municipio' and nome_municipio:
-    #     # Carregue o DataFrame de municípios
-    #     df_municipio = load_municipios_data(ano, estado_selecionado, nome_municipio)
-    #     if not df_municipio.empty:
-    #         center_lat = float(df_municipio['lat'].iloc[0])
-    #         center_lon = float(df_municipio['lng'].iloc[0])
-    #         zoom = calculate_zoom(gdf, estado_selecionado, 800, 600)
-            
+
     # 3. Se o usuário moveu/fez zoom manualmente, sobrescreve
     if relayoutData:
         zoom = relayoutData.get('mapbox.zoom', zoom)
@@ -121,7 +110,7 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
             zmin=MIN_NOTA,
             zmax=MAX_NOTA,
             marker_opacity=0.2,
-            marker_line_color=COLOR_RED_ESTADO,
+            marker_line_color=COLOR_ESTADO,
             marker_line_width=4,
             showscale=False,
             name='Estado Selecionado'
@@ -147,7 +136,6 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
                 customdata=df_municipios['nota_total'],
                 name='Municípios',
             ))
-            
 
     # 6. Layout
     fig.update_layout(
@@ -160,6 +148,4 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
         paper_bgcolor="#D6D6D6",
         plot_bgcolor="#D6D6D6",
     )
-    end_time = time.time()
-
     return fig

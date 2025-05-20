@@ -21,6 +21,8 @@ def load_map_data(ano=None, estado=None):
         if estado:
             gdf = gdf[gdf['estado'] == estado]
             
+        gdf["geometry"] = gdf["geometry"].simplify(tolerance=0.01)
+            
     # else:
     #     query = "SELECT * FROM enem.mv_media_global_estado"
     #     if ano:
