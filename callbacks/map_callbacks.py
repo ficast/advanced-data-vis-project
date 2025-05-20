@@ -51,11 +51,15 @@ def atualizar_nome_municipio(selectedData):
 )
 def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, fig_state):
     # Defaults
-    if not relayoutData:
-        relayoutData = {}
-    zoom = relayoutData.get('mapbox.zoom', MAPBOX_ZOOM) 
-    center_lat = relayoutData.get('mapbox.center', MAPBOX_CENTER)['lat']
-    center_lon = relayoutData.get('mapbox.center', MAPBOX_CENTER)['lon']    
+    zoom = MAPBOX_ZOOM
+    center_lat = MAPBOX_CENTER['lat']
+    center_lon = MAPBOX_CENTER['lon']
+    
+    if fig_state and 'layout' in fig_state and 'mapbox' in fig_state['layout']:
+        zoom = fig_state['layout']['mapbox'].get('zoom', zoom)
+        center_lat = fig_state['layout']['mapbox']['center'].get('lat', center_lat)
+        center_lon = fig_state['layout']['mapbox']['center'].get('lon', center_lon)
+
     ctx = dash.callback_context
     if not ctx.triggered:
         return fig_state  # Retorna o mapa anterior se nenhum input foi alterado

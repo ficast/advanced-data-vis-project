@@ -180,3 +180,27 @@ def sync_all_graphs(radar_restyle, boxplot_restyle, participantes_restyle, renda
     cor_raca_fig = update_traces_visibility(cor_raca_fig, toggled_name, new_visibility)
 
     return radar_fig, boxplot_fig, participantes_fig, renda_fig, tipo_escola_fig, cor_raca_fig
+
+
+@app.callback(
+    Output("loading-content", "children"),
+    [Input("map-graph", "clickData"),
+     Input('ano-selecionado', 'children'),
+     Input('nome-estado', 'children'),
+     Input('nome-municipio', 'children'),
+     Input('limpar-ano', 'n_clicks'),
+     Input('radar-areas', 'restyleData'),
+     Input('box-plots', 'restyleData'),
+     Input('participantes-graph', 'restyleData'),
+     Input('grafico-renda-familiar', 'restyleData'),
+     Input('grafico-tipo-escola', 'restyleData'),
+     Input('grafico-cor-raca', 'restyleData'),
+     Input('timeline-graph', 'clickData'),
+     Input('timeline-graph', 'relayoutData')
+     ]
+)
+def update_sidebar(clickData, ano_selecionado, nome_estado, nome_municipio, limpar_ano, radar_restyle, boxplot_restyle, participantes_restyle, renda_restyle, tipo_escola_restyle, cor_raca_restyle, timeline_click, timeline_relayout):
+    if clickData or timeline_click:
+        import time
+        time.sleep(2)
+        return ""

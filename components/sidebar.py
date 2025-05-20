@@ -10,6 +10,12 @@ sidebar = dbc.Container(
             "Dados Enem 2014-2023",
             style={"color": "#000000", "textAlign": "center", "marginBottom": "16px"},
         ),
+        dcc.Loading(
+            id="loading-sidebar",
+            type="default",
+            children=[html.Div(id="loading-content", style={"display": "relative", "margin-top": "24px"})],
+        ),
+        html.Hr(style={**styleHr, "border": "2px solid #000000"}),
         html.Div(
             [
                 html.H3("Filtrando por:", style={"color": "#000000"}),
