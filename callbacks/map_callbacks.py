@@ -51,10 +51,11 @@ def atualizar_nome_municipio(selectedData):
 )
 def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, fig_state):
     # Defaults
-    zoom = MAPBOX_ZOOM
-    center_lat = MAPBOX_CENTER['lat']
-    center_lon = MAPBOX_CENTER['lon']
-    
+    if not relayoutData:
+        relayoutData = {}
+    zoom = relayoutData.get('mapbox.zoom', MAPBOX_ZOOM) 
+    center_lat = relayoutData.get('mapbox.center', MAPBOX_CENTER)['lat']
+    center_lon = relayoutData.get('mapbox.center', MAPBOX_CENTER)['lon']    
     ctx = dash.callback_context
     if not ctx.triggered:
         return fig_state  # Retorna o mapa anterior se nenhum input foi alterado
@@ -70,11 +71,7 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
     if (trigger_id == 'nome-estado' and estado_selecionado):
         center_lat, center_lon = get_estado_coordinates(gdf, estado_selecionado)
         zoom = calculate_zoom(gdf, estado_selecionado, 800, 600)
-    elif relayoutData:
-        zoom = relayoutData.get('mapbox.zoom', zoom)
-        center_lat = relayoutData.get('mapbox.center.lat', center_lat)
-        center_lon = relayoutData.get('mapbox.center.lon', center_lon)
-
+        
     # 4. Cria figura base com os estados
     fig = go.Figure(go.Choroplethmapbox(
         geojson=gdf.__geo_interface__,

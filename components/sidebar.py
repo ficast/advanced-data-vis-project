@@ -50,7 +50,6 @@ sidebar = dbc.Container(
                 "display": "flex",
                 "justifyContent": "center",
                 "alignItems": "center",
-                "backgroundColor": "white",
             },
         ),
         html.Hr(style=styleHr),
@@ -94,6 +93,7 @@ sidebar = dbc.Container(
         html.Div(
             [
                 dcc.Graph(
+                    id="grafico-renda-familiar",
                     config={
                         "displayModeBar": False,
                         "scrollZoom": False,
@@ -106,6 +106,8 @@ sidebar = dbc.Container(
                 "alignItems": "center",
             },
         ),
+        html.Hr(style=styleHr),
+        html.H3("Notas Médias por Tipo de Escola", style={"color": "#000000"}),
         html.Div(
             [
                 dcc.Graph(
@@ -123,6 +125,7 @@ sidebar = dbc.Container(
             },
         ),
         html.Hr(style=styleHr),
+        html.H3("Notas Médias por Cor/Raça", style={"color": "#000000"}),
         html.Div(
             [
                 dcc.Graph(
