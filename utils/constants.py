@@ -34,6 +34,7 @@ MAPPING_COR_RACA_LABEL = {
 }
 
 MAPPING_TP_ESCOLA_LABEL = {
+    0: "Não informado",
     1: "Pública",
     2: "Privada",
 }

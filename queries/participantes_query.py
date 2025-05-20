@@ -19,7 +19,6 @@ def load_participantes_data(estado=None, municipio=None):
 
     try:
         df = pd.read_sql(query, session.connection())
-        df['nome'] = df['nome'].str.capitalize()
         return df
     except Exception as e:
         print(f"Erro ao carregar dados: {str(e)}")

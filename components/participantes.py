@@ -76,7 +76,9 @@ def create_participantes_figure(df, estado=None, municipio=None):
         ),
         plot_bgcolor='white',
         paper_bgcolor='white',
-        margin=dict(l=60, r=30, t=50, b=50)
+        margin=dict(l=40, r=40, t=40, b=40),
+        width=500,
+
     )
 
     return fig

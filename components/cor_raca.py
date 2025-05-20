@@ -79,6 +79,7 @@ def criar_grafico_cor_raca(ano, estado, municipio):
         plot_bgcolor='white',
         paper_bgcolor='white',
         margin=dict(l=40, r=40, t=40, b=40),
+        width=500,
         showlegend=True,
         legend=dict(
             orientation="h",

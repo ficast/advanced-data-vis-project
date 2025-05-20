@@ -107,18 +107,18 @@ def create_box_plots(df, nome_estado, nome_municipio):
 
     fig.update_layout(
         height=1000,
-        width=400,
-        showlegend=True,
-        margin=dict(l=40, r=20, t=50, b=20),
+        width=500,
+        margin=dict(l=40, r=40, t=40, b=40),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
+        showlegend=True,
         legend=dict(
             orientation="h",
             yanchor="bottom",
             y=1.02,
             xanchor="right",
             x=1
-        ),
+        )
     )
 
     return fig

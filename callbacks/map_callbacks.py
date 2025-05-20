@@ -5,7 +5,7 @@ from queries.map_query import load_map_data
 import plotly.graph_objects as go
 from app import app
 from queries.municipios_query import load_municipios_data
-from utils.map_utils import calcular_tamanho_marcador, calculate_zoom, get_estado_coordinates
+from utils.map_utils import calculate_zoom, get_estado_coordinates
 from utils.constants import (
     COLOR_ESTADO,
     MAPBOX_ACCESS_TOKEN,
@@ -67,12 +67,10 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
     estado_selecionado = nome_estado if nome_estado != "Brasil" else None
 
     # 2. Se um estado está selecionado, calcula centro e zoom
-    if (trigger_id == 'nome-estado' and estado_selecionado) or (trigger_id == 'nome-municipio' and nome_municipio):
+    if (trigger_id == 'nome-estado' and estado_selecionado):
         center_lat, center_lon = get_estado_coordinates(gdf, estado_selecionado)
         zoom = calculate_zoom(gdf, estado_selecionado, 800, 600)
-
-    # 3. Se o usuário moveu/fez zoom manualmente, sobrescreve
-    if relayoutData:
+    elif relayoutData:
         zoom = relayoutData.get('mapbox.zoom', zoom)
         center_lat = relayoutData.get('mapbox.center.lat', center_lat)
         center_lon = relayoutData.get('mapbox.center.lon', center_lon)
@@ -124,7 +122,7 @@ def atualizar_mapa(relayoutData, ano_selecionado, nome_estado, nome_municipio, f
                 lon=df_municipios['lng'],
                 mode='markers',
                 marker=go.scattermapbox.Marker(
-                    size=calcular_tamanho_marcador(df_municipios['nota_total'], escala=10),
+                    size=10,
                     color=df_municipios['nota_total'],
                     colorscale='Reds',
                     opacity=0.8,

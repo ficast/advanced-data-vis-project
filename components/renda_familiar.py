@@ -78,6 +78,7 @@ def criar_grafico_renda_familiar(ano, estado, municipio):
         paper_bgcolor='white',
         margin=dict(l=40, r=40, t=40, b=40),
         showlegend=True,
+        width=500,
         legend=dict(
             orientation="h",
             yanchor="bottom",

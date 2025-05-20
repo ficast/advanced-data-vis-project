@@ -48,7 +48,7 @@ def radar_areas(df_areas, estado=None, municipio=None):
         ),
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.1, xanchor="right", x=1),
-        margin=dict(l=20, r=20, t=20, b=20),
+        margin=dict(l=40, r=40, t=40, b=40),
         height=300,
         width=500
     )

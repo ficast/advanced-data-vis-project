@@ -45,7 +45,13 @@ sidebar = dbc.Container(
                     },
                     style={"height": "400px"},
                 )
-            ]
+            ],
+            style={
+                "display": "flex",
+                "justifyContent": "center",
+                "alignItems": "center",
+                "backgroundColor": "white",
+            },
         ),
         html.Hr(style=styleHr),
         html.H3("Notas Médias por Disciplina", style={"color": "#000000"}),
@@ -81,7 +87,6 @@ sidebar = dbc.Container(
                 "display": "flex",
                 "justifyContent": "center",
                 "alignItems": "center",
-                "backgroundColor": "white",
             },
         ),
         html.Hr(style=styleHr),
@@ -89,41 +94,50 @@ sidebar = dbc.Container(
         html.Div(
             [
                 dcc.Graph(
-                    id="grafico-renda-familiar",
                     config={
                         "displayModeBar": False,
                         "scrollZoom": False,
                     },
                 ),
             ],
+            style={
+                "display": "flex",
+                "justifyContent": "center",
+                "alignItems": "center",
+            },
         ),
-        html.Hr(style=styleHr),
-        html.H3("Notas Médias por Tipo de Escola", style={"color": "#000000"}),
         html.Div(
             [
                 dcc.Graph(
                     id="grafico-tipo-escola",
-                    style={"height": "400px"},
                     config={
                         "displayModeBar": False,
                         "scrollZoom": False,
                     },
                 ),
             ],
+            style={
+                "display": "flex",
+                "justifyContent": "center",
+                "alignItems": "center",
+            },
         ),
         html.Hr(style=styleHr),
-        html.H3("Notas Médias por Cor/Raça", style={"color": "#000000"}),
         html.Div(
             [
                 dcc.Graph(
                     id="grafico-cor-raca",
-                    style={"height": "400px"},
                     config={
                         "displayModeBar": False,
                         "scrollZoom": False,
                     },
                 ),
             ],
+            style={
+                "display": "flex",
+                "justifyContent": "center",
+                "alignItems": "center",
+            },
         ),
     ],
     fluid=True,
