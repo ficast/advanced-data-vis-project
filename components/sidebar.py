@@ -1,7 +1,7 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-from utils.constants import LOADING_COLOR
+from utils.constants import COLOR_BRASIL
 
 styleHr = {"marginBottom": "12px", "marginTop": "12px"}
 
@@ -15,7 +15,7 @@ sidebar = dbc.Container(
         dcc.Loading(
             id="loading-sidebar",
             type="default",
-            color=LOADING_COLOR,
+            color=COLOR_BRASIL,
             children=[html.Div(id="loading-content", style={"display": "relative", "margin-top": "24px"})],
         ),
         html.Hr(style={**styleHr, "border": "2px solid #000000"}),
