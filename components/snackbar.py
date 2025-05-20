@@ -41,6 +41,7 @@ snackbar = dbc.Toast(
     header_style={"color": COLOR_BRASIL, "fontSize": "18px"},
     dismissable=True,
     duration=30000,
+    icon="info",
     style={
         "position": "fixed",
         "top": "50%",
